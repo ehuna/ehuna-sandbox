@@ -43,7 +43,7 @@ namespace Ehuna.Sandbox.AzureTableMagic.ConsoleSample
 {
     internal class Program
     {
-        // Chabge me in App.config
+        // Change me in App.config
         private static readonly string ConnectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
         private static readonly Guid TheMerchantId = Guid.NewGuid();
 
@@ -55,6 +55,7 @@ namespace Ehuna.Sandbox.AzureTableMagic.ConsoleSample
 
             System.Net.ServicePointManager.DefaultConnectionLimit = 35;
             TableExample();
+            TableExample2();
 
             Console.WriteLine("");
         }
@@ -85,6 +86,25 @@ namespace Ehuna.Sandbox.AzureTableMagic.ConsoleSample
 
             progress.FileBytesProcessed = 50000;
             azureTableRepository.InsertOrReplace(progress);
+        }
+
+        private static void TableExample2()
+        {
+            var azureTableRepository = new AzureTableRepository<FileUploadHistoryTable>(
+                ConnectionString,
+                partitionKeyGetters: new Expression<Func<FileUploadHistoryTable, object>>[] { 
+                                        item => item.LastTimeUpdated},
+                rowKeyGetters: new Expression<Func<FileUploadHistoryTable, object>>[] {
+                                        item => item.MerchantId});
+
+            var history = new FileUploadHistoryTable
+            {
+                LastTimeUpdated = DateTime.UtcNow,
+                MerchantId = TheMerchantId,
+                FileId = Guid.NewGuid().ToString("N"),
+            };
+
+            azureTableRepository.InsertOrReplace(history);
         }
     }
 }
