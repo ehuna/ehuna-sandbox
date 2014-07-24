@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ehuna.Sandbox.AzureTableMagic.ConsoleSample", "Ehuna.Sandbox.AzureTableMagic.ConsoleSample\Ehuna.Sandbox.AzureTableMagic.ConsoleSample.csproj", "{D3E25CA3-908E-45C8-9D5E-C2C324075C10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ehuna.Sandbox.AzureTableMagic.Storage", "..\Ehuna.Sandbox.AzureTableMagic.Storage\Ehuna.Sandbox.AzureTableMagic.Storage.csproj", "{F4947B88-7F6F-46DF-B0C6-1692076B1518}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ehuna.Sandbox.AzureTableMagic.Storage", "Ehuna.Sandbox.AzureTableMagic.Storage\Ehuna.Sandbox.AzureTableMagic.Storage.csproj", "{F4947B88-7F6F-46DF-B0C6-1692076B1518}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
