@@ -56,18 +56,21 @@ namespace Ehuna.Sandbox.AzureTableMagic.ConsoleSample
             System.Net.ServicePointManager.DefaultConnectionLimit = 35;
             TableExample();
 
-            Console.WriteLine("Press any key to close...");
-            Console.ReadLine();
+            Console.WriteLine("");
         }
 
         private static void TableExample()
         {
+            Console.WriteLine("Creating an instance of the Azure Table Repository.");
+
             var azureTableRepository = new AzureTableRepository<FileProgressTable>(
                 ConnectionString,
                 partitionKeyGetters: new Expression<Func<FileProgressTable, object>>[] { 
                                         item => item.MerchantId},
                 rowKeyGetters:      new Expression<Func<FileProgressTable, object>>[] {
                                         item => item.FileId});
+
+            Console.WriteLine("Inserting a new entity.");
 
             var progress = new FileProgressTable {
                 MerchantId = TheMerchantId,
@@ -76,6 +79,11 @@ namespace Ehuna.Sandbox.AzureTableMagic.ConsoleSample
                 FileBytesProcessed = 0
             };
 
+            azureTableRepository.InsertOrReplace(progress);
+
+            Console.WriteLine("Updating an existing entity.");
+
+            progress.FileBytesProcessed = 50000;
             azureTableRepository.InsertOrReplace(progress);
         }
     }
