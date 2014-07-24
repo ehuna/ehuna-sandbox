@@ -1,9 +1,4 @@
 ﻿using System.Web;
-using Ehuna.Sandbox.AzureTableMagic.Storage.Common.Collections;
-using Ehuna.Sandbox.AzureTableMagic.Storage.Common.Data;
-using Ehuna.Sandbox.AzureTableMagic.Storage.Common.Extensions;
-using Ehuna.Sandbox.AzureTableMagic.Storage.Common.Functional;
-using Ehuna.Sandbox.AzureTableMagic.Storage.Interfaces;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
@@ -16,6 +11,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+using Ehuna.Sandbox.AzureTableMagic.Storage.Common.Collections;
+using Ehuna.Sandbox.AzureTableMagic.Storage.Common.Data;
+using Ehuna.Sandbox.AzureTableMagic.Storage.Common.Extensions;
+using Ehuna.Sandbox.AzureTableMagic.Storage.Common.Functional;
+using Ehuna.Sandbox.AzureTableMagic.Storage.Interfaces;
+
 namespace Ehuna.Sandbox.AzureTableMagic.Storage.Table
 {
     public class AzureTableRepository<TEntity> : IPartitionedRepository<TEntity>
@@ -25,8 +26,7 @@ namespace Ehuna.Sandbox.AzureTableMagic.Storage.Table
         const int ConflictCode = 409;
         const int NotFoundCode = 404;
 
-        private CloudStorageAccount _cloudStorageAccount;
-        private CloudTable _table;
+        private readonly CloudTable _table;
 
         private readonly Func<TEntity, object>[] _partitionKeyGetters;
         private readonly Func<TEntity, object>[] _rowKeyGetters;
@@ -38,13 +38,13 @@ namespace Ehuna.Sandbox.AzureTableMagic.Storage.Table
 
         public
         AzureTableRepository(
-             CloudStorageAccount cloudStorageAccount,
+             string storageConnectionString,
              Expression<Func<TEntity, object>>[] partitionKeyGetters,
              Expression<Func<TEntity, object>>[] rowKeyGetters,
              string[] partitionKeyEntityPropertyNames = null,
              string[] rowKeyEntityPropertyNames = null)
         {
-            _cloudStorageAccount = cloudStorageAccount;
+            var cloudStorageAccount = CloudStorageAccount.Parse(storageConnectionString); ;
 
             // create the table
             var tableClient = cloudStorageAccount.CreateCloudTableClient();
@@ -54,7 +54,7 @@ namespace Ehuna.Sandbox.AzureTableMagic.Storage.Table
             table.CreateIfNotExists();
 
             _table = table;
-            
+
             // Save the partition and row key property names.
             _partitionKeyEntityPropertyNames =
                 partitionKeyEntityPropertyNames ??

@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace Ehuna.Sandbox.AzureTableMagic.ConsoleSample
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            TableExample();
+        }
+
+        private static void TableExample()
+        {
+            //var magicalTableRepo = new AzureTableRepo
         }
     }
 }
